@@ -13,15 +13,16 @@ import glob, os
 from scipy import signal
 import matplotlib.pyplot as plt
 from biosppy.signals import ecg, resp
+import scipy.signal as sig
 
 # Idea is to create a new dataset, breaking the time siries in a fixed frequency
 # This would create more meaningful data
 
-def respiration(dataset, frequency=256):
+def respiration(data, frequency=256):
 
     b, a = signal.butter(8,0.05)
     # get the raw data and filter it
-    respiration = signal.filtfilt(b, a, dataset['r'], padlen=150)
+    respiration = signal.filtfilt(b, a, data, padlen=150)
     # plt.plot(resp[3000:4024])
     # plt.show()
 
@@ -44,16 +45,16 @@ def respiration(dataset, frequency=256):
 
 
 
-def ecg_(dataset, frequency=256):
+def ecg_(data, frequency=256):
 
     # filter the data
     b, a = signal.butter(8,0.01)
-    y = signal.filtfilt(b, a, dataset['ecg'], padlen=150)
+    y = signal.filtfilt(b, a, data, padlen=150)
 
     # plt.plot(y[6000:14024])
     # plt.show()
 
-    out = ecg.ecg(signal=dataset['ecg'], sampling_rate=frequency, show=False)
+    out = ecg.ecg(signal=data, sampling_rate=frequency, show=False)
 
     # plt.plot(out['heart_rate_ts'], out['heart_rate'])
     # plt.ylabel('Heart Rate (BPM)')
@@ -65,7 +66,7 @@ def ecg_(dataset, frequency=256):
     heart_filtered = out['filtered']
 
     # What to Return ? ? ? ?
-    print(heart_rate.shape)
+    #print(heart_rate.shape)
     return heart_rate
 
 
@@ -95,6 +96,35 @@ def eeg_(dataset, frequency=256):
     p4_o2 = dataset['eeg_p4'] - dataset['eeg_o2']
 
 
+
+def get_pulse(ecg, window=256, ratio=2.0, thresh=0.5):
+    n = ecg.shape[0]
+    bf = sig.butter(5, [0.1, 10], btype='bandpass', fs=256, output='sos')    
+    filtered = sig.sosfilt(bf, ecg)
+    scale = np.empty(n)
+    for i in range(window):
+        scale[i] = np.max(np.abs(filtered[0:i+window]))
+    for i in range(window,n-window):
+        scale[i] = np.max(np.abs(filtered[i-window:i+window]))
+    for i in range(n-window,n):
+        scale[i] = np.max(np.abs(filtered[i-window:n]))
+    pulse = np.empty(n)
+    pr = 1
+    pulse[0] = pr
+    tu0 = -128
+    tu1 = 0
+    for i in range(1,n):
+        if filtered[i-1]/scale[i-1] <= thresh and filtered[i]/scale[i] > thresh:
+            npr = 256/(i-tu0)
+            if npr > pr/ratio and npr < pr*ratio:
+                pr = npr
+            tu1=tu0
+            tu0=i
+        pulse[i] = pr
+    return pulse/np.mean(pulse)
+
+
+
 if __name__ == '__main__':
 
     dataset_path = "../data"
@@ -105,14 +135,15 @@ if __name__ == '__main__':
         file = sys.argv[1]
         if os.path.exists(file):
             try:
-                
+
                 
                 dataset = pd.read_csv(sys.argv[1])
 
-                engineered_data['respiration_rate'] = respiration(dataset)
-                ecg_(dataset)
+                engineered_data['respiration_rate'] = respiration(dataset['r'])
+                ecg_(dataset['ecg'])
                 eeg_(dataset)
-                #engineered_data['heart_rate'] = ecg_(dataset)
+                print(get_pulse(dataset['ecg']).shape)
+                #engineered_data['heart_rate'] = ecg_(dataset['ecg'])
 
             except OSError:
                 print("Could not open/read file:", file)
