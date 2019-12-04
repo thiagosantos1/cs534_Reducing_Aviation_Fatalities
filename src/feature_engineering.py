@@ -41,6 +41,7 @@ def respiration(data, frequency=256):
 
     # What to Return ? ? ? ?
     
+    print(resp_rate.shape)
     return resp_rate
 
 
@@ -54,11 +55,11 @@ def ecg_(data, frequency=256):
     # plt.plot(y[6000:14024])
     # plt.show()
 
-    out = ecg.ecg(signal=data, sampling_rate=frequency, show=False)
+    out = ecg.ecg(signal=data, sampling_rate=frequency, show=True)
 
-    # plt.plot(out['heart_rate_ts'], out['heart_rate'])
-    # plt.ylabel('Heart Rate (BPM)')
-    # plt.xlabel('Time [s]');
+    plt.plot(out['heart_rate_ts'], out['heart_rate'])
+    plt.ylabel('Heart Rate (BPM)')
+    plt.xlabel('Time [s]');
 
 
     heart_rate_ts = out['heart_rate_ts']
@@ -66,7 +67,7 @@ def ecg_(data, frequency=256):
     heart_filtered = out['filtered']
 
     # What to Return ? ? ? ?
-    #print(heart_rate.shape)
+    print(heart_rate.shape)
     return heart_rate
 
 
@@ -138,7 +139,7 @@ if __name__ == '__main__':
 
                 
                 dataset = pd.read_csv(sys.argv[1])
-
+                print(dataset.shape)
                 engineered_data['respiration_rate'] = respiration(dataset['r'])
                 ecg_(dataset['ecg'])
                 eeg_(dataset)
