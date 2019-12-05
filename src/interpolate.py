@@ -1,40 +1,38 @@
-#!/usr/bin/python3
-
 import numpy as np
 
-
-def interpolate(v0, n1):
-    xb = np.linalg.inv(np.array([[1, -1, 1], [1, 0, 0], [1, 1, 1]]))
-    xa = np.linalg.inv(np.array([[1, 0, 0], [1, 1, 1], [1, 2, 4]]))
-    # print(xa)
-    # print(xb)
-    n0 = v0.shape[0]
-    r = n0/n1
-    v1 = np.empty(n1)
-    old = -1
-    vf = np.dot(xa, np.transpose(v0[0:3]))
-    vl = np.dot(xb, np.transpose(v0[n0-3:n0]))
-    for i in range(n1):
-        ix = (i+0.5)*r-0.5
-        new = int(np.floor(ix))
-        if new < 1:
-            vx = np.array([1.0, ix, ix*ix])
-            v1[i] = np.dot(vx, vf)
-        elif new > n0-3:
-            s = ix-n0+2
-            vx = np.array([1.0, s, s*s])
-            v1[i] = np.dot(vx, vl)
+def interpolate(in_vec, in_ts, out_ts):
+    in_len=in_ts.shape[0]
+    out_len=out_ts.shape[0]
+    in_pow = np.empty((in_len, 4))
+    out_pow = np.empty((out_len, 4))
+    in_pow[:,0] = np.ones(in_len)
+    out_pow[:,0] = np.ones(out_len)
+    for i in range(1,4):
+        in_pow[:,i] = in_pow[:,i-1]*in_ts
+        out_pow[:,i] = out_pow[:,i-1]*out_ts
+    lo = in_vec.min()
+    hi = in_vec.max()
+    out_vec = np.empty(out_len)
+    win_mat = in_pow[0:4,:]
+    win_inv = np.linalg.inv(win_mat)
+    win_fn = np.dot(win_inv, in_vec[0:4])
+    for i in range(4):
+        vec = in_pow[i,:]
+        # print(in_vec[i], np.dot(vec, win_fn))
+                       
+    wix = 0
+    for i in range(out_len):
+        if wix+4 < in_len and out_ts[i] > in_ts[wix+2]:
+            while wix+4 < in_len and out_ts[i] > in_ts[wix+2]:
+                wix += 1
+            win_mat = in_pow[wix:wix+4,:]
+            win_inv = np.linalg.inv(win_mat)
+            win_fn = np.dot(win_inv, in_vec[wix:wix+4])
+        v = np.dot(out_pow[i,:], win_fn)
+        if v<lo:
+            out_vec[i] = lo
+        elif v>hi:
+            out_vec[i] = hi
         else:
-            s = ix-new
-            vx = np.array([1.0, s, s])
-            if new != old:
-                vb = np.dot(xb, np.transpose(v0[new-1:new+2]))
-                va = np.dot(xa, np.transpose(v0[new:new+3]))
-            # print(np.dot(v, vb), np.dot(v, va))
-            v1[i] = np.dot(vx, vb)*(ix-new)+np.dot(vx, va)*(new+1.0-ix)
-        # print(new, i, ix, v1[i])
-    return v1
-
-
-v = np.array(range(5))
-print(interpolate(v, 13))
+            out_vec[i] = v
+    return out_vec
