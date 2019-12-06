@@ -37,3 +37,12 @@ def interpolate(in_vec, in_ts, out_ts):
         else:
             out_vec[i] = v
     return out_vec
+
+
+def lognorm2norm(v):
+    # Take waht is assumed to be lognormal distributed data and
+    # convert it to a normal distribution with a mean of 0 and a
+    # variance of 1
+    norm = np.log(v)
+    norm = norm-np.mean(norm)
+    return norm/np.sqrt(np.var(norm, ddof=1))
