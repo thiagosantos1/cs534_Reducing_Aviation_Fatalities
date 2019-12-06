@@ -16,6 +16,7 @@ from biosppy.signals import ecg, resp
 import scipy.signal as sig
 from tools import *
 import re
+from sklearn import preprocessing
 
 
 # Idea is to create a new dataset, breaking the time siries in a fixed frequency
@@ -44,7 +45,7 @@ def respiration(data, d_time, frequency=256):
 
     # What to Return ? ? ? ?
     
-    resp_rate_interpolated = interpolate(resp_rate, resp_rate_ts, d_time)
+    resp_rate_interpolated = int_spline(resp_rate, resp_rate_ts, d_time)
     return lognorm2norm(resp_rate_interpolated)
 
 
@@ -71,7 +72,7 @@ def ecg_(data, d_time, frequency=256):
 
     # What to Return ? ? ? ?
     #print(heart_rate.shape)
-    heart_rate_interpolated = interpolate(heart_rate, heart_rate_ts, d_time)
+    heart_rate_interpolated = int_spline(heart_rate, heart_rate_ts, d_time)
     return lognorm2norm(heart_rate_interpolated)
 
 
@@ -131,51 +132,66 @@ def get_pulse(ecg, window=256, ratio=2.0, thresh=0.5):
     return pulse/np.mean(pulse)
 
 
+def feature_engineering(file):
+    engineered_data = pd.DataFrame()
+    print("Preprocessing file: ",file)
+    if os.path.exists(file):
+        try:
+            dataset = pd.read_csv(file)
+
+            engineered_data['resp_rate']        = respiration(dataset['r'], dataset['time'])
+            engineered_data['heart_rate']       = ecg_(dataset['ecg'], dataset['time'])
+            eeg_sig = eeg_(dataset)
+            for key in eeg_sig:
+                engineered_data[key] = eeg_sig[key]
+
+
+            engineered_data['gsr']    = preprocessing.scale(dataset['gsr'])
+            engineered_data['target'] = dataset['event']
+
+            return engineered_data
+            
+        except OSError:
+            print("Could not open/read file:", file)
+            sys.exit()
+    else:
+        print("File: ", file, " Does not exist")
+        sys.exit()
+
 
 if __name__ == '__main__':
 
     dataset_path = "../data"
-    engineered_data = pd.DataFrame()
 
     # for a specific data/series input
     if len(sys.argv) > 1:
         file = sys.argv[1]
-        if os.path.exists(file):
-            try:
-
-                
-                dataset = pd.read_csv(file)
-                engineered_data['resp_rate'] = respiration(dataset['r'], dataset['time'])
-                engineered_data['heart_rate']       = ecg_(dataset['ecg'], dataset['time'])
-                eeg_sig = eeg_(dataset)
-                for key in eeg_sig:
-                    engineered_data[key] = eeg_sig[key]
-
-                engineered_data['target'] = [re.split("_", file)[2]] * dataset.shape[0]
-
-                print(engineered_data)
-            except OSError:
-                print("Could not open/read file:", file)
-                sys.exit()
-        else:
-            print("File: ", file, " Does not exist")
-            sys.exit()
+        engineered_data_1sample = feature_engineering(file)
+        engineered_data_1sample['target'] = pd.factorize(engineered_data_1sample['target'])[0]
+        engineered_data_1sample.to_csv(r'../data/engineered_train_1sample.csv', index = None, header=True)
     
         
     else:
 
         os.chdir(dataset_path)
+        engineered_full_data = pd.DataFrame()
         for file in glob.glob("train_*.csv"):
             try:
                 data = pd.read_csv(file)
-                # first, do some feature engineering in each
-
+                engineered_data_sample = feature_engineering(file)
+                engineered_full_data = engineered_full_data.append(engineered_data_sample)
 
                 # Then for each, combine as new features, instead of new rowns
             except OSError:
                 print("Could not open/read file:", file)
                 sys.exit()
 
+        engineered_full_data['target'] = pd.factorize(engineered_full_data['target'])[0]
+        out = '../data/engineered_train_full.csv'
+        print("\nSaving to CSV ", out, "......\n")
+        engineered_full_data.to_csv(r'../data/engineered_train_full.csv', index = None, header=True)
+
+        print("Preprocessing Done Successfully")
 
     ###### 
     # Save the new engineered_data to file, and use it as input for any model to be tried
