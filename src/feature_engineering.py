@@ -3,7 +3,7 @@
 # Feature engineering for the dataset
 # Loads all train/test splited csvs and does the feature enginnering
 # Or can do it just for one set - For debuging process
-#
+# 
 
 import pandas as pd
 import numpy as np
@@ -14,11 +14,14 @@ from scipy import signal
 import matplotlib.pyplot as plt
 from biosppy.signals import ecg, resp
 import scipy.signal as sig
+from tools import *
+import re
+
 
 # Idea is to create a new dataset, breaking the time siries in a fixed frequency
 # This would create more meaningful data
 
-def respiration(data, frequency=256):
+def respiration(data, d_time, frequency=256):
 
     b, a = signal.butter(8,0.05)
     # get the raw data and filter it
@@ -41,12 +44,12 @@ def respiration(data, frequency=256):
 
     # What to Return ? ? ? ?
     
-    print(resp_rate.shape)
-    return resp_rate
+    resp_rate_interpolated = interpolate(resp_rate, resp_rate_ts, d_time)
+    return lognorm2norm(resp_rate_interpolated)
 
 
 
-def ecg_(data, frequency=256):
+def ecg_(data, d_time, frequency=256):
 
     # filter the data
     b, a = signal.butter(8,0.01)
@@ -55,7 +58,7 @@ def ecg_(data, frequency=256):
     # plt.plot(y[6000:14024])
     # plt.show()
 
-    out = ecg.ecg(signal=data, sampling_rate=frequency, show=True)
+    out = ecg.ecg(signal=data, sampling_rate=frequency, show=False)
 
     plt.plot(out['heart_rate_ts'], out['heart_rate'])
     plt.ylabel('Heart Rate (BPM)')
@@ -67,35 +70,38 @@ def ecg_(data, frequency=256):
     heart_filtered = out['filtered']
 
     # What to Return ? ? ? ?
-    print(heart_rate.shape)
-    return heart_rate
+    #print(heart_rate.shape)
+    heart_rate_interpolated = interpolate(heart_rate, heart_rate_ts, d_time)
+    return lognorm2norm(heart_rate_interpolated)
 
 
 def eeg_(dataset, frequency=256):
     
     # There're diffent ways to handle eeg
-    fp1_f7 = dataset['eeg_fp1'] - dataset['eeg_f7']
-    f7_t3 = dataset['eeg_f7'] - dataset['eeg_t3']
-    t3_t5 = dataset['eeg_t3'] - dataset['eeg_t5']
-    t5_o1 = dataset['eeg_t5'] - dataset['eeg_o1']
-    fp1_f3 = dataset['eeg_fp1'] - dataset['eeg_f7']
-    f3_c3 = dataset['eeg_f3'] - dataset['eeg_c3']
-    c3_p3 = dataset['eeg_c3'] - dataset['eeg_p3']
-    p3_o1 = dataset['eeg_p3'] - dataset['eeg_o1']
+    eeg_signals = {}
+    eeg_signals['fp1_f7']  = dataset['eeg_fp1'] - dataset['eeg_f7']
+    eeg_signals['f7_t3']   = dataset['eeg_f7'] - dataset['eeg_t3']
+    eeg_signals['t3_t5']   = dataset['eeg_t3'] - dataset['eeg_t5']
+    eeg_signals['t5_o1']   = dataset['eeg_t5'] - dataset['eeg_o1']
+    eeg_signals['fp1_f3']  = dataset['eeg_fp1'] - dataset['eeg_f7']
+    eeg_signals['f3_c3']   = dataset['eeg_f3'] - dataset['eeg_c3']
+    eeg_signals['c3_p3']   = dataset['eeg_c3'] - dataset['eeg_p3']
+    eeg_signals['p3_o1']   = dataset['eeg_p3'] - dataset['eeg_o1']
 
-    fz_cz = dataset['eeg_fz'] - dataset['eeg_cz']
-    cz_pz = dataset['eeg_cz'] - dataset['eeg_pz']
-    pz_poz = dataset['eeg_pz'] - dataset['eeg_poz']
+    eeg_signals['fz_cz']   = dataset['eeg_fz'] - dataset['eeg_cz']
+    eeg_signals['cz_pz']   = dataset['eeg_cz'] - dataset['eeg_pz']
+    eeg_signals['pz_poz']  = dataset['eeg_pz'] - dataset['eeg_poz']
 
-    fp2_f8 = dataset['eeg_fp2'] - dataset['eeg_f8']
-    f8_t4 = dataset['eeg_f8'] - dataset['eeg_t4']
-    t4_t6 = dataset['eeg_t4'] - dataset['eeg_t6']
-    t6_o2 = dataset['eeg_t6'] - dataset['eeg_o2']
-    fp2_f4 = dataset['eeg_fp2'] - dataset['eeg_f4']
-    f4_c4 = dataset['eeg_f4'] - dataset['eeg_c4']
-    c4_p4 = dataset['eeg_c4'] - dataset['eeg_p4']
-    p4_o2 = dataset['eeg_p4'] - dataset['eeg_o2']
+    eeg_signals['fp2_f8']  = dataset['eeg_fp2'] - dataset['eeg_f8']
+    eeg_signals['f8_t4']   = dataset['eeg_f8'] - dataset['eeg_t4']
+    eeg_signals['t4_t6']   = dataset['eeg_t4'] - dataset['eeg_t6']
+    eeg_signals['t6_o2']   = dataset['eeg_t6'] - dataset['eeg_o2']
+    eeg_signals['fp2_f4']  = dataset['eeg_fp2'] - dataset['eeg_f4']
+    eeg_signals['f4_c4']   = dataset['eeg_f4'] - dataset['eeg_c4']
+    eeg_signals['c4_p4']   = dataset['eeg_c4'] - dataset['eeg_p4']
+    eeg_signals['p4_o2']   = dataset['eeg_p4'] - dataset['eeg_o2']
 
+    return eeg_signals
 
 
 def get_pulse(ecg, window=256, ratio=2.0, thresh=0.5):
@@ -138,14 +144,16 @@ if __name__ == '__main__':
             try:
 
                 
-                dataset = pd.read_csv(sys.argv[1])
-                print(dataset.shape)
-                engineered_data['respiration_rate'] = respiration(dataset['r'])
-                ecg_(dataset['ecg'])
-                eeg_(dataset)
-                print(get_pulse(dataset['ecg']).shape)
-                #engineered_data['heart_rate'] = ecg_(dataset['ecg'])
+                dataset = pd.read_csv(file)
+                engineered_data['resp_rate'] = respiration(dataset['r'], dataset['time'])
+                engineered_data['heart_rate']       = ecg_(dataset['ecg'], dataset['time'])
+                eeg_sig = eeg_(dataset)
+                for key in eeg_sig:
+                    engineered_data[key] = eeg_sig[key]
 
+                engineered_data['target'] = [re.split("_", file)[2]] * dataset.shape[0]
+
+                print(engineered_data)
             except OSError:
                 print("Could not open/read file:", file)
                 sys.exit()
