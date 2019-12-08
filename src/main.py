@@ -22,8 +22,8 @@ if __name__ == '__main__':
             y_validaiton= validation['target']
             X_validation = validation.drop(['target'], axis=1)
 
-            lgbm_model = run_lgb(X_train, y_train, X_validation, y_validaiton)
-
+            #lgbm_model = run_lgb(X_train, y_train, X_validation, y_validaiton)
+            decision_tree = run_DecisionTree(X_train, y_train, X_validation, y_validaiton)
 
         except OSError:
             print("Could not open/read file:", file)
