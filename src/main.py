@@ -22,8 +22,18 @@ if __name__ == '__main__':
             y_validaiton= validation['target']
             X_validation = validation.drop(['target'], axis=1)
 
-            #lgbm_model = run_lgb(X_train, y_train, X_validation, y_validaiton)
+
+            #### Base Models
+            logistic = run_logisticRegression(X_train, y_train, X_validation, y_validaiton)
+            ridge = run_ridge(X_train, y_train, X_validation, y_validaiton)
+            lasso = run_lasso(X_train, y_train, X_validation, y_validaiton)
+
+            #### "Best" Models
+            lgbm_model = run_lgb(X_train, y_train, X_validation, y_validaiton)
+            print("\n##############")
             decision_tree = run_DecisionTree(X_train, y_train, X_validation, y_validaiton)
+            print("\n##############")
+            rand_forest = run_RandomForest(X_train, y_train, X_validation, y_validaiton)
 
         except OSError:
             print("Could not open/read file:", file)

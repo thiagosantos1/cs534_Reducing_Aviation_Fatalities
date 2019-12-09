@@ -15,6 +15,10 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import Lasso
+
 
 ##### METRICS
 from sklearn.metrics import precision_score
@@ -26,6 +30,40 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import log_loss
 import time
 
+
+##### Base Models #####
+
+def run_logisticRegression(X_train, y_train, X_test, y_test):
+
+    print("\n### Running Logistic Regression\n")
+    model = LogisticRegression().fit(X_train, y_train)
+    score = model.score(X_test, y_test)
+    print("Logistic Score: ", score)
+    return model
+
+
+def run_ridge(X_train, y_train, X_test, y_test, alpha_=0.9):
+
+    print("\n### Running Ridge Regression\n")
+    model = Ridge(alpha=alpha_)
+    model.fit(X_train, y_train)
+    score = model.score(X_test, y_test)
+    print("Ridge Score: ", score)
+    return model
+
+
+def run_lasso(X_train, y_train, X_test, y_test, alpha_=0.2):
+
+    print("\n### Running Lasso Regression\n")
+    model = Lasso(alpha=alpha_)
+    model.fit(X_train, y_train)
+    score = model.score(X_test, y_test)
+    print("Lasso Score: ", score)
+    return model
+
+
+
+##### Searching for Better Models #####
 
 # Lightgbm
 def run_lgb(X_train, y_train, X_test, y_test):
@@ -60,8 +98,7 @@ def run_lgb(X_train, y_train, X_test, y_test):
     
     lg_train = lgb.Dataset(X_train, label=(y_train))
     lg_test = lgb.Dataset(X_test, label=(y_test))
-    #model = lgb.train(params2, lg_train, 1000, valid_sets=[lg_test], early_stopping_rounds=50, verbose_eval=100)
-    model = lgb.train(params2, lg_train, 1000, valid_sets=[lg_test], early_stopping_rounds=50, verbose_eval=100,num_boost_round=2000 )
+    model = lgb.train(params2, lg_train, 1000, valid_sets=[lg_test], early_stopping_rounds=80, verbose_eval=100)
 
     return model
 
@@ -79,22 +116,24 @@ def run_DecisionTree(X_train, y_train, X_test, y_test, max_depth_=30):
     dec_tree_score = clf_1.score(X_test, y_test)
     pr_score = precision_score(y_test, y_pred, average='weighted')
     rc_score = recall_score(y_test, y_pred, average='weighted')
-    f1_score = f1_score(y_test, y_pred, average='weighted')
+    f1_score_ = f1_score(y_test, y_pred, average='weighted')
     print('dec_tree_score ',dec_tree_score)
     print('precision_score', pr_score)
     print('recall_score', rc_score)
-    print('f1_score', f1_score)
+    print('f1_score', f1_score_)
     print('dec_tree_time (s)', dec_tree_time)
 
     cm = confusion_matrix(y_test, y_pred)
     print('\nconfusion_matrix\n',cm)
-    plt.matshow(cm)
-    plt.show()
+    # plt.matshow(cm)
+    # plt.show()
 
 
-def run_RandomForest(X_train, y_train, X_test, y_test, max_depth_=20, n_estimators_=50):
+def run_RandomForest(X_train, y_train, X_test, y_test, max_depth_=30, n_estimators_=50):
 
-    clf_2 = RandomForestClassifier(n_estimators=n_estimators_, max_depth=max_depth_0)
+    print("\n### Running Random Forest Classifier\n")
+    start = time.time()
+    clf_2 = RandomForestClassifier(n_estimators=n_estimators_, max_depth=max_depth_)
     clf_2 = clf_2.fit(X_train, y_train)
     end = time.time()
     y_pred = clf_2.predict(X_test)
@@ -110,5 +149,5 @@ def run_RandomForest(X_train, y_train, X_test, y_test, max_depth_=20, n_estimato
 
     cm = confusion_matrix(y_test, y_pred)
     print('confusion_matrix\n',cm)
-    plt.matshow(cm)
-    plt.show()
+    # plt.matshow(cm)
+    # plt.show()
