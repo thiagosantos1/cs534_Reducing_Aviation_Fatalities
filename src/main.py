@@ -10,11 +10,20 @@ from models import *
 
 
 if __name__ == '__main__':
-    file = "../data/engineered_train_full.csv"
+    file = "../data/engineered_train_full_kalman.csv"
 
     if os.path.exists(file):
         try:
+
+            print("\n#### Loading Data ####")
             dataset_train = pd.read_csv(file)
+            # plt.plot( dataset_train['gsr'])
+            # plt.show()
+
+            # data_norm = preprocessing.scale(dataset_train['gsr'][1000000:])
+            # plt.plot(data_norm)
+            # plt.show()
+
             train, validation = train_test_split(dataset_train, test_size=0.2, shuffle=True)
             y_train = train['target']
             X_train = train.drop(['target'], axis=1)
