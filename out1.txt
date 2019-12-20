@@ -1,0 +1,147 @@
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.5770923357369991
+
+### Running Ridge Regression
+
+Ridge Score:  0.006451442678840125
+
+### Running Lasso Regression
+
+Lasso Score:  -2.238324262382463e-06
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.544813
+[LightGBM] [Info] Start training from score -1.061242
+[LightGBM] [Info] Start training from score -3.064515
+[LightGBM] [Info] Start training from score -3.599120
+Training until validation scores don't improve for 80 rounds.
+[100]	valid_0's multi_error: 0.400306
+[200]	valid_0's multi_error: 0.376632
+[300]	valid_0's multi_error: 0.362721
+[400]	valid_0's multi_error: 0.353362
+[500]	valid_0's multi_error: 0.345915
+[600]	valid_0's multi_error: 0.339628
+[700]	valid_0's multi_error: 0.333933
+[800]	valid_0's multi_error: 0.329333
+[900]	valid_0's multi_error: 0.325004
+[1000]	valid_0's multi_error: 0.320934
+Did not meet early stopping. Best iteration is:
+[1000]	valid_0's multi_error: 0.320934
+
+##############
+
+### Running Decision Tree Classifier
+
+dec_tree_score  0.9450563257733211
+precision_score 0.9448681058387037
+recall_score 0.9450563257733211
+f1_score 0.944861061814869
+dec_tree_time (s) 320.85065627098083
+
+confusion_matrix
+ [[533467  16348   2603    819]
+ [ 21649 307324   1345    455]
+ [  4896   2098  37896     48]
+ [  1415    729     70  23907]]
+
+##############
+
+### Running Random Forest Classifier
+
+RF_score  0.8757482443676844
+precision_score 0.8860389335924649
+recall_score 0.8757482443676844
+RF_time (s) 2563.8396396636963
+confusion_matrix
+ [[539222  14004      8      3]
+ [ 65006 265760      7      0]
+ [ 24089   4133  16716      0]
+ [  9313   2106      0  14702]]
+
+Partitioned
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.578404282831921
+logistic
+accuracy (train): 0.5794305383774728
+/usr/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1268: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+precision (train): 0.3655402961169679
+recall (train): 0.5794305383774728
+accuracy (validation): 0.578404282831921
+precision (validation): 0.3656416561972006
+recall (validation): 0.578404282831921
+ridge
+
+### Running Ridge Regression
+
+Ridge Score:  0.002783409643235868
+
+### Running Ridge Regression
+
+Ridge Score:  0.001101251440544404
+
+### Running Ridge Regression
+
+Ridge Score:  0.0011831672875743937
+
+### Running Ridge Regression
+
+Ridge Score:  0.008828311981693537
+accuracy (train): 0.5796616735706199
+/usr/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1268: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+precision (train): 0.3433523314669226
+recall (train): 0.5796616735706199
+accuracy (validation): 0.5786074095170087
+precision (validation): 0.33803975477603676
+recall (validation): 0.5786074095170087
+lasso
+
+### Running Lasso Regression
+
+Lasso Score:  0.00021787497583436455
+
+### Running Lasso Regression
+
+Lasso Score:  0.0005843663543007027
+
+### Running Lasso Regression
+
+Lasso Score:  -1.9380175255712118e-06
+
+### Running Lasso Regression
+
+Lasso Score:  -1.0598314958976118e-06
+accuracy (train): 0.5799865192950769
+/usr/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1268: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+precision (train): 0.3364169860994274
+recall (train): 0.5799865192950769
+accuracy (validation): 0.578937228619084
+precision (validation): 0.33520372910192114
+recall (validation): 0.578937228619084

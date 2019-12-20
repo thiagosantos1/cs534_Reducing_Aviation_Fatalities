@@ -1,0 +1,324 @@
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.5795665025249485
+
+### Running Logistic Regression
+
+Logistic Score:  0.5799591443131334
+
+### Running Logistic Regression
+
+Logistic Score:  0.6538511877152331
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.9533646260113143
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.9728469880186668
+
+### Running Ridge Regression
+
+Ridge Score:  0.00667862463911828
+
+### Running Lasso Regression
+
+Lasso Score:  -3.0322500672586017e-06
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.545306
+[LightGBM] [Info] Start training from score -1.060820
+[LightGBM] [Info] Start training from score -3.062280
+[LightGBM] [Info] Start training from score -3.597829
+Training until validation scores don't improve for 80 rounds.
+[100]	valid_0's multi_error: 0.399817
+[200]	valid_0's multi_error: 0.376671
+[300]	valid_0's multi_error: 0.362557
+^CTraceback (most recent call last):
+  File "./main2.py", line 45, in <module>
+    lgbm_model = run_lgb(X_train, y_train, X_validation, y_validaiton)
+  File "/home/alex/201908/aviation/altsrc/models.py", line 101, in run_lgb
+    model = lgb.train(params2, lg_train, 1000, valid_sets=[lg_test], early_stopping_rounds=80, verbose_eval=100)
+  File "/usr/lib/python3.8/site-packages/lightgbm/engine.py", line 218, in train
+    booster.update(fobj=fobj)
+  File "/usr/lib/python3.8/site-packages/lightgbm/basic.py", line 1800, in update
+    _safe_call(_LIB.LGBM_BoosterUpdateOneIter(
+KeyboardInterrupt
+
+[alex@ignoramous altsrc]$ ./main2.py
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.5795036798388389
+
+### Running Logistic Regression
+
+Logistic Score:  0.6531234916011304
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.9536787394418623
+
+### Running Logistic Regression
+
+/usr/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:937: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html.
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Logistic Score:  0.9728375646157503
+
+### Running Ridge Regression
+
+Ridge Score:  0.0025421816560313726
+
+### Running Ridge Regression
+
+Ridge Score:  0.0009282212849072158
+
+### Running Ridge Regression
+
+Ridge Score:  0.001308819736944633
+
+### Running Ridge Regression
+
+Ridge Score:  0.008509567719649058
+
+### Running Lasso Regression
+
+Lasso Score:  0.00021959067558030565
+
+### Running Lasso Regression
+
+Lasso Score:  0.0005409317442385264
+
+### Running Lasso Regression
+
+Lasso Score:  -6.582510916341987e-06
+
+### Running Lasso Regression
+
+Lasso Score:  -1.2944596650132922e-06
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.866935
+[LightGBM] [Info] Start training from score -0.545137
+[LightGBM] [Info] Start training from score -34.538776
+[LightGBM] [Info] Start training from score -34.538776
+Training until validation scores don't improve for 80 rounds.
+[100]	valid_0's multi_error: 0.379659
+[200]	valid_0's multi_error: 0.352223
+[300]	valid_0's multi_error: 0.337341
+[400]	valid_0's multi_error: 0.32842
+[500]	valid_0's multi_error: 0.320853
+[600]	valid_0's multi_error: 0.313628
+[700]	valid_0's multi_error: 0.308479
+[800]	valid_0's multi_error: 0.30403
+[900]	valid_0's multi_error: 0.300291
+[1000]	valid_0's multi_error: 0.296879
+Did not meet early stopping. Best iteration is:
+[1000]	valid_0's multi_error: 0.296879
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.424637
+[LightGBM] [Info] Start training from score -1.061336
+[LightGBM] [Info] Start training from score -34.538776
+[LightGBM] [Info] Start training from score -34.538776
+Training until validation scores don't improve for 80 rounds.
+[100]	valid_0's multi_error: 0.329246
+[200]	valid_0's multi_error: 0.312287
+[300]	valid_0's multi_error: 0.30088
+[400]	valid_0's multi_error: 0.292368
+[500]	valid_0's multi_error: 0.286109
+[600]	valid_0's multi_error: 0.280924
+[700]	valid_0's multi_error: 0.27604
+[800]	valid_0's multi_error: 0.271908
+[900]	valid_0's multi_error: 0.268182
+[1000]	valid_0's multi_error: 0.264586
+Did not meet early stopping. Best iteration is:
+[1000]	valid_0's multi_error: 0.264586
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.047993
+[LightGBM] [Info] Start training from score -3.060603
+[LightGBM] [Info] Start training from score -34.538776
+[LightGBM] [Info] Start training from score -34.538776
+Training until validation scores don't improve for 80 rounds.
+Early stopping, best iteration is:
+[1]	valid_0's multi_error: 0.0463202
+
+### Running Light GBM Classifier
+
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Total Bins 5632
+[LightGBM] [Info] Number of data: 3820275, number of used features: 22
+[LightGBM] [Warning] feature_fraction is set=0.7, colsample_bytree=0.5 will be ignored. Current value: feature_fraction=0.7
+[LightGBM] [Info] Start training from score -0.027767
+[LightGBM] [Info] Start training from score -3.597753
+[LightGBM] [Info] Start training from score -34.538776
+[LightGBM] [Info] Start training from score -34.538776
+Training until validation scores don't improve for 80 rounds.
+Early stopping, best iteration is:
+[1]	valid_0's multi_error: 0.0272001
+
+##############
+
+### Running Decision Tree Classifier
+
+dec_tree_score  0.9488476748800349
+precision_score 0.948810059577243
+recall_score 0.9488476748800349
+f1_score 0.9488140200394143
+dec_tree_time (s) 305.2766525745392
+
+confusion_matrix
+ [[374822  26292]
+ [ 22562 531393]]
+
+### Running Decision Tree Classifier
+
+dec_tree_score  0.947977580677417
+precision_score 0.9478183578154047
+recall_score 0.947977580677417
+f1_score 0.9478129846905551
+dec_tree_time (s) 320.22064328193665
+
+confusion_matrix
+ [[603632  20540]
+ [ 29145 301752]]
+
+### Running Decision Tree Classifier
+
+dec_tree_score  0.9917628988062642
+precision_score 0.9916920338156379
+recall_score 0.9917628988062642
+f1_score 0.9917228343317284
+dec_tree_time (s) 311.5869812965393
+
+confusion_matrix
+ [[907344   3486]
+ [  4381  39858]]
+
+### Running Decision Tree Classifier
+
+dec_tree_score  0.9964463300557342
+precision_score 0.9964014552119265
+recall_score 0.9964463300557342
+f1_score 0.9964156619359343
+dec_tree_time (s) 373.90665102005005
+
+confusion_matrix
+ [[927847   1244]
+ [  2150  23828]]
+
+##############
+
+### Running Random Forest Classifier
+
+RF_score  0.8905115756034381
+precision_score 0.8941349976963149
+recall_score 0.8905115756034381
+RF_time (s) 2456.0920679569244
+confusion_matrix
+ [[320738  80376]
+ [ 24193 529762]]
+
+### Running Random Forest Classifier
+
+RF_score  0.8704837032717008
+precision_score 0.8794020605130348
+recall_score 0.8704837032717008
+RF_time (s) 2537.154629468918
+confusion_matrix
+ [[609586  14586]
+ [109111 221786]]
+
+### Running Random Forest Classifier
+
+RF_score  0.9717109444448516
+precision_score 0.9725172604338994
+recall_score 0.9717109444448516
+RF_time (s) 2553.5842237472534
+confusion_matrix
+ [[910825      5]
+ [ 27013  17226]]
+
+### Running Random Forest Classifier
+
+RF_score  0.9889264545284163
+precision_score 0.9890465718358153
+recall_score 0.9889264545284163
+RF_time (s) 2754.0089485645294
+confusion_matrix
+ [[929085      6]
+ [ 10570  15408]]

@@ -185,6 +185,8 @@ if __name__ == '__main__':
             except OSError:
                 print("Could not open/read file:", file)
                 sys.exit()
+            except ValueError:
+                print("File:", file, "skipped")
 
         engineered_full_data['target'] = pd.factorize(engineered_full_data['target'])[0]
         out = '../data/engineered_train_full.csv'
